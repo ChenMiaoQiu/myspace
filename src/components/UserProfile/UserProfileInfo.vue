@@ -3,11 +3,11 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-3">
-                    <img class="img-fluid" src="https://cdn.acwing.com/media/user/profile/photo/179851_lg_999c62f13a.jpg">
+                    <img class="img-fluid" :src="user.photo">
                 </div>
                 <div class="col-9">
                     <div class="username"> {{ user.username }} </div>
-                    <div class="fans"> 粉丝数: {{ user.follower }} </div>
+                    <div class="fans"> 粉丝数: {{ user.followerCount }} </div>
                     <button @click="follow" v-if="!user.is_follow" type="button" class="btn btn-info btn-sm">+关注</button>
                     <button @click="unfollow" v-if="user.is_follow" type="button"
                         class="btn btn-danger btn-sm">取消关注</button>

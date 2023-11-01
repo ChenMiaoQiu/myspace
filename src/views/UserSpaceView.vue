@@ -17,7 +17,10 @@ import WebCard from '@/components/WebCard.vue';
 import UserProfileInfo from '@/components/UserProfile/UserProfileInfo.vue';
 import UserProfilePosts from '@/components/UserProfile/UserProfilePosts.vue';
 import UserProfileEdit from '@/components/UserProfile/UserProfileEdit.vue';
+import { useRoute } from 'vue-router';
 import { reactive } from 'vue';
+import { useStore } from 'vuex';
+import $ from 'jquery';
 
 export default {
     name: 'UserSpaceView',
@@ -28,32 +31,46 @@ export default {
         UserProfileEdit,
     },
     setup() {
-        const user = reactive({
-            id: 1,
-            username: "ChenMiaoQiu",
-            follower: 0,
-            is_follow: false,
+        const route = useRoute();
+        const store = useStore();
+
+        const userId = route.params.userId;
+
+        const user = reactive({});
+        const posts = reactive({});
+
+        $.ajax({
+            url: "https://app165.acapp.acwing.com.cn/myspace/getinfo/",
+            type: "get",
+            data: {
+                user_id: userId,
+            },
+            headers: {
+                'Authorization': "Bearer " + store.state.user.access,
+            },
+            success(resp) {
+                user.id = resp.id;
+                user.username = resp.username;
+                user.photo = resp.photo;
+                user.is_follow = resp.is_follow;
+                user.followerCount = resp.followerCount;
+            }
         });
 
-        const posts = reactive({
-            count: 3,
-            posts: [
-                {
-                    id: 1,
-                    username: "ChenMiaoQiu",
-                    context: "hahahaha",
-                },
-                {
-                    id: 2,
-                    username: "ChenMiaoQiu",
-                    context: "hahahaha1",
-                },
-                {
-                    id: 3,
-                    username: "ChenMiaoQiu",
-                    context: "hahahaha2",
-                }
-            ]
+        $.ajax({
+            url: "https://app165.acapp.acwing.com.cn/myspace/post/",
+            type: "get",
+            data: {
+                user_id: userId,
+            },
+            headers: {
+                'Authorization': "Bearer " + store.state.user.access,
+            },
+            success(resp) {
+                console.log(resp);
+                posts.count = resp.length;
+                posts.posts = resp;
+            }
         });
 
         const follow = () => {
@@ -80,6 +97,8 @@ export default {
         return {
             user: user,
             posts: posts,
+            userId: userId,
+            store,
             follow,
             unfollow,
             PostAPost,

@@ -12,18 +12,28 @@
                         <RouterLink class="nav-link active" aria-current="page" :to="{ name: 'home' }">首页</RouterLink>
                     </li>
                     <li class="nav-item">
-                        <RouterLink class="nav-link" :to="{ name: 'userlist' }">好友列表</RouterLink>
+                        <RouterLink class="nav-link" :to="{ name: 'userlist' }">用户列表</RouterLink>
                     </li>
-                    <li class="nav-item">
-                        <RouterLink class="nav-link" :to="{ name: 'userspace' }">用户动态</RouterLink>
-                    </li>
+                    <!-- <li class="nav-item">
+                        <RouterLink class="nav-link" :to="{ name: 'userspace', params: { userId: 2 } }">用户动态</RouterLink>
+                    </li> -->
                 </ul>
-                <ul class="navbar-nav">
+                <ul v-if="!store.state.user.is_login" class="navbar-nav">
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'register' }">注册</RouterLink>
                     </li>
                     <li class="nav-item">
                         <RouterLink class="nav-link" :to="{ name: 'login' }">登录</RouterLink>
+                    </li>
+                </ul>
+                <ul v-else class="navbar-nav">
+                    <li class="nav-item">
+                        <RouterLink class="nav-link" :to="{ name: 'userspace', params: { userId: store.state.user.id } }">
+                            {{ store.state.user.username }}
+                        </RouterLink>
+                    </li>
+                    <li class="nav-item">
+                        <div class="nav-link" @click="logout">注销</div>
                     </li>
                 </ul>
             </div>
@@ -32,11 +42,24 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import { RouterLink } from 'vue-router';
 
 export default {
     name: "NavBar",
-    components: { RouterLink }
+    components: { RouterLink },
+    setup() {
+        const store = useStore();
+
+        const logout = () => {
+            store.dispatch("logout");
+        };
+
+        return {
+            store,
+            logout
+        }
+    }
 }
 </script>
 

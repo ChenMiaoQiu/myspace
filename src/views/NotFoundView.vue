@@ -1,6 +1,10 @@
 <template>
     <WebCard>
-        404
+        <div class="card">
+            <div class="card-body">
+                <img src="https://static.hdslb.com/error/very_sorry.png">
+            </div>
+        </div>
     </WebCard>
 </template>
   
