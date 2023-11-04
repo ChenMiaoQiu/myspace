@@ -8,9 +8,13 @@
                 <div class="col-9">
                     <div class="username"> {{ user.username }} </div>
                     <div class="fans"> 粉丝数: {{ user.followerCount }} </div>
-                    <button @click="follow" v-if="!user.is_follow" type="button" class="btn btn-info btn-sm">+关注</button>
-                    <button @click="unfollow" v-if="user.is_follow" type="button"
-                        class="btn btn-danger btn-sm">取消关注</button>
+                    <div v-if="!user.isMe">
+                        <button @click="follow" v-if="!user.is_follow" type="button"
+                            class="btn btn-info btn-sm">+关注</button>
+                        <button @click="unfollow" v-if="user.is_follow" type="button"
+                            class="btn btn-danger btn-sm">取消关注</button>
+                    </div>
+
                 </div>
             </div>
         </div>

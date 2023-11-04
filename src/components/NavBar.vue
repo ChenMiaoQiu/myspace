@@ -33,7 +33,7 @@
                         </RouterLink>
                     </li>
                     <li class="nav-item">
-                        <div class="nav-link" @click="logout">注销</div>
+                        <div class="nav-link" @click="logout" style="cursor: pointer;">注销</div>
                     </li>
                 </ul>
             </div>
@@ -44,6 +44,7 @@
 <script>
 import { useStore } from 'vuex';
 import { RouterLink } from 'vue-router';
+import router from '@/router';
 
 export default {
     name: "NavBar",
@@ -53,6 +54,7 @@ export default {
 
         const logout = () => {
             store.dispatch("logout");
+            router.push({ name: "home" });
         };
 
         return {
